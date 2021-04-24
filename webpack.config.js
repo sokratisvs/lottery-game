@@ -1,5 +1,7 @@
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src', "index.js");
@@ -9,12 +11,13 @@ const config = {
     output: {
         path: DIST_DIR,
         filename: 'bundle.js',
+        clean: true,
     },
     module: {
         rules: [
             {
                 test: /\.scss$/,
-                use: ["style-loader", "css-loader", "sass-loader"]
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
             },
             {
                 test: /\.(jsx|js)$/,
@@ -28,25 +31,32 @@ const config = {
                                 "targets": "defaults"
                             }],
                             '@babel/preset-react'
-                        ]
+                        ],
+                        plugins: ["@babel/plugin-transform-runtime"]
                     }
                 }]
             },
         ]
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
-        // open: true,
-        // clientLogLevel: 'silent',
-        // port: 9000,
-        // historyApiFallback: true,
-        // hot: true
+        open: true,
+        clientLogLevel: 'silent',
+        port: process.env.DEV_SERVER_PORT,
+        historyApiFallback: true,
+        hot: true
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "src", "index.html")
-        })
+        }),
+        // build css bundle
+        new MiniCssExtractPlugin({
+            filename: "bundle.css"
+        }),
+        // use env variables
+        new Dotenv()
     ]
 };
 
