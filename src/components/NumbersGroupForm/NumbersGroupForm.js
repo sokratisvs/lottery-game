@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom";
+import removeIcon from '../../assets/remove.png';
 import "./NumbersGroupForm.scss";
 
-const NumberBlock = ({ value, isChecked, id, onhandleClick }) => {
-    return (
-        <div
-            className="number-block"
-            style={{
-                color: isChecked ? '#1E90FF' : '#000'
-            }}
-            onClick={() => isChecked || onhandleClick(id)}
-        >
-            {value}
-        </div>
-    )
-}
+const NumberBlock = ({ value, isChecked, id, onhandleClick }) => (
+    <div
+        className="number-block number-block--pointer"
+        style={{
+            color: isChecked ? '#1E90FF' : '#000'
+        }}
+        onClick={() => isChecked || onhandleClick(id)}
+    >
+        {value}
+    </div>
+)
+
+const SelectedNumber = ({ value, id, onhandleClick }) => (
+    <div
+        className="number-block number-block--selected"
+
+    >
+        {value} <span onClick={() => onhandleClick(id)} className="number-block__remove number-block--pointer"><img src={removeIcon} alt="remove" className="number-block__remove" /></span>
+    </div>
+)
 
 const NumbersGroupForm = () => {
     const history = useHistory();
@@ -37,6 +45,8 @@ const NumbersGroupForm = () => {
         const updatedTotalNumbersArray = totalNumbers.map((item) =>
             item.id === id ? { ...item, isChecked: !item['isChecked'] } : item
         );
+        const searchForChecked = updatedTotalNumbersArray.filter(item => item.isChecked === true);
+        searchForChecked.length >= 5 ? setHasFiveSelectedNumbers(true) : setHasFiveSelectedNumbers(false);
         setTotalNumbers(updatedTotalNumbersArray)
     }
 
@@ -47,13 +57,13 @@ const NumbersGroupForm = () => {
 
     return (
         <div className="numbers-form__container">
-            <div className="numbers-form__numbers">
+            <div className="numbers-form__numbers numbers-form__numbers--pool">
                 {
                     totalNumbers && totalNumbers.map((item) => {
                         return (
                             <NumberBlock
                                 key={item.id}
-                                onhandleClick={handleCheckElement}
+                                onhandleClick={hasFiveSelectedNumbers || handleCheckElement}
                                 id={item.id}
                                 isChecked={item.isChecked}
                                 value={item.value}
@@ -61,20 +71,25 @@ const NumbersGroupForm = () => {
                         )
                     })
                 }
+                <div className="description">{hasFiveSelectedNumbers ? 'Submit if you are ready' : 'Please choose 5 numbers'}</div>
             </div>
-            <div className="numbers-form__numbers">
+            <div className="numbers-form__numbers numbers-form__numbers--selected">
                 {totalNumbers && totalNumbers.map((item) => {
-                    return item.isChecked ? <div className="number-block number-block--selected" key={item.value}>{item.value} <span className="number-block__remove">x</span></div> : null
+                    return item.isChecked ?
+                        <SelectedNumber
+                            key={item.id}
+                            onhandleClick={handleCheckElement}
+                            id={item.id}
+                            value={item.value}
+                        /> : null
                 })
                 }
+                {hasFiveSelectedNumbers && (
+                    <button onClick={submitNumbers} className="numbers-form__button">
+                        submit
+                    </button>)
+                }
             </div>
-
-            {/* {hasFiveSelectedNumbers && (
-                <button onClick={submitNumbers}>
-                    submit
-                </button>)
-            } */}
-
         </div>
     );
 };

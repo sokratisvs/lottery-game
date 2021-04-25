@@ -12,7 +12,6 @@ const config = {
         path: DIST_DIR,
         filename: 'bundle.js',
         clean: true,
-        // publicPath: DIST_DIR,
     },
     module: {
         rules: [
@@ -51,7 +50,7 @@ const config = {
             }
         ]
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         open: true,

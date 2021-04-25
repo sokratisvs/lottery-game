@@ -1,12 +1,29 @@
 .numbers-form {
     &__container {
         display: flex;
+        padding-top: 100px;
         height: 50vh;
     }
     &__numbers {
         display: flex;
-        width: 50%;
         flex-wrap: wrap;
+        padding-left: 20px;
+        &--pool {
+            width: 60%;
+            height: 30vh;
+        }
+        &--selected {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    &__button {
+        text-align: center;
+        padding: 10px 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 17px;
+        cursor: pointer;
     }
 }
 
@@ -17,15 +34,24 @@
     margin: 10px;
     border: 1px solid #000;
     text-align: center;
-    cursor: pointer;
+    &--pointer {
+        cursor: pointer;
+    }
     &--selected {
+        display: flex;
         height: 20px;
         width: 200px;
         justify-content: space-between;
+        align-items: center;
     }
     &__remove {
         width: 20px;
-        padding: 5px;
-        cursor: pointer;
+        height: 20px;
     }
+}
+
+.description {
+    width: 100%;
+    text-align: center;
+    padding-top: 50px;
 }
