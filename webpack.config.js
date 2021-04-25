@@ -12,6 +12,7 @@ const config = {
         path: DIST_DIR,
         filename: 'bundle.js',
         clean: true,
+        // publicPath: DIST_DIR,
     },
     module: {
         rules: [
@@ -36,9 +37,21 @@ const config = {
                     }
                 }]
             },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'src/assets/[name].[ext]'
+                        }
+                    },
+                ],
+
+            }
         ]
     },
-    // devtool: 'source-map',
+    devtool: 'source-map',
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         open: true,

@@ -1,0 +1,31 @@
+.numbers-form {
+    &__container {
+        display: flex;
+        height: 50vh;
+    }
+    &__numbers {
+        display: flex;
+        width: 50%;
+        flex-wrap: wrap;
+    }
+}
+
+.number-block {
+    padding: 5px;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+    border: 1px solid #000;
+    text-align: center;
+    cursor: pointer;
+    &--selected {
+        height: 20px;
+        width: 200px;
+        justify-content: space-between;
+    }
+    &__remove {
+        width: 20px;
+        padding: 5px;
+        cursor: pointer;
+    }
+}
